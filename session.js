@@ -48,7 +48,7 @@ class FileSessionStore {
   }
 }
 
-export function session(options = {}) {
+export default function session(options = {}) {
   const { type = 'memory' } = options
   // Always use sessions.json in project root for file store
   const store =

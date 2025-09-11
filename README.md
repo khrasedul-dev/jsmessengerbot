@@ -190,9 +190,8 @@ bot.on('postback', async (ctx) => {
 
 ```js
 import 'dotenv/config'
-import MessengerBot, { Markup } from 'jsmessengerbot'
-import { Scene, SceneManager } from 'jsmessengerbot/scenes'
-import { session } from 'jsmessengerbot/session'
+import MessengerBot, { Markup, session,  Scene, SceneManager } from 'jsmessengerbot'
+
 
 const bot = new MessengerBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,

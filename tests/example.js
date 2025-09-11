@@ -1,7 +1,6 @@
 import 'dotenv/config'
-import MessengerBot, { Markup } from '../index.js'
-import { Scene, SceneManager } from '../scenes.js'
-import { session } from '../session.js'
+import MessengerBot, { Markup, session, Scene, SceneManager } from '../index.js'
+
 
 const bot = new MessengerBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
