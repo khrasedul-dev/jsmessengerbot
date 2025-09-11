@@ -241,6 +241,10 @@ bot.command('/start', async (ctx) => {
 })
 bot.command('/registration', scenes.enter('registration'))
 
+bot.hears(["hello", "hi", "hey"], async (ctx) => {
+  await ctx.reply('Hello! How can I assist you today?')
+})
+
 // Media URLs
 const testPhotoUrl = 'https://www.w3schools.com/w3images/lights.jpg'
 const testDocUrl =
