@@ -16,7 +16,6 @@ bot.catch((err, ctx, next) => {
   // Optionally reply to user or handle error
 })
 
-
 // Registration scene
 const registrationScene = new Scene('registration', [
   async (ctx) => {
@@ -67,7 +66,7 @@ bot.command('/start', async (ctx) => {
 })
 bot.command('/registration', scenes.enter('registration'))
 
-bot.hears(["hello", "hi", "hey"], async (ctx) => {
+bot.hears(['hello', 'hi', 'hey'], async (ctx) => {
   await ctx.reply('Hello! How can I assist you today?')
 })
 
@@ -148,5 +147,9 @@ bot.on('postback', async (ctx) => {
   console.log('Received postback:', ctx.event.postback?.payload)
 })
 
+// Multiple command example
+bot.command(['/start', '/help', /\/test/i], async (ctx) => {
+  await ctx.reply('You triggered a multi-command handler!')
+})
 
 bot.start(3000)

@@ -1,3 +1,13 @@
+#### Multiple Command Patterns
+
+You can match multiple commands with an array or regex:
+
+```js
+bot.command(['/start', '/help', /\/test/i], async (ctx) => {
+  await ctx.reply('You triggered a multi-command handler!')
+})
+```
+
 ### Global Error Handler
 
 Add a global error handler for all middleware and handlers:
@@ -241,7 +251,7 @@ bot.command('/start', async (ctx) => {
 })
 bot.command('/registration', scenes.enter('registration'))
 
-bot.hears(["hello", "hi", "hey"], async (ctx) => {
+bot.hears(['hello', 'hi', 'hey'], async (ctx) => {
   await ctx.reply('Hello! How can I assist you today?')
 })
 

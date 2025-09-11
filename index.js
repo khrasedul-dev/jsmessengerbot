@@ -98,9 +98,20 @@ class MessengerBot {
     }
   }
 
-  command(cmd, fn) {
+  command(cmds, fn) {
+    const arr = Array.isArray(cmds) ? cmds : [cmds]
     this.on('message', (ctx) => {
-      if (ctx.text && ctx.text === cmd) fn(ctx)
+      if (ctx.text) {
+        for (const cmd of arr) {
+          if (typeof cmd === 'string' && ctx.text === cmd) {
+            fn(ctx)
+            return
+          } else if (cmd instanceof RegExp && cmd.test(ctx.text)) {
+            fn(ctx)
+            return
+          }
+        }
+      }
     })
   }
 
