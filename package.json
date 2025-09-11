@@ -1,0 +1,35 @@
+{
+  "name": "jsmessengerbot",
+  "version": "1.0.0",
+  "description": "A modern telegraf-style framework for Facebook Messenger bots.",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "messengerjs",
+    "bot",
+    "messenger",
+    "facebook",
+    "telegraf",
+    "framework"
+  ],
+  "author": "KH Rasedul <rasedul.dev@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khrasedul-dev/messengerjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/khrasedul-dev/messengerjs/issues"
+  },
+  "homepage": "https://github.com/khrasedul-dev/messengerjs#readme",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.2"
+  }
+}
