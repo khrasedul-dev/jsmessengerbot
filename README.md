@@ -1,23 +1,4 @@
-#### Multiple Command Patterns
 
-You can match multiple commands with an array or regex:
-
-```js
-bot.command(['/start', '/help', /\/test/i], async (ctx) => {
-  await ctx.reply('You triggered a multi-command handler!')
-})
-```
-
-### Global Error Handler
-
-Add a global error handler for all middleware and handlers:
-
-```js
-bot.catch((err, ctx, next) => {
-  console.error('Global error:', err)
-  // Optionally reply to user or handle error
-})
-```
 
 A **Telegraf-inspired framework** for building **Facebook Messenger bots** with modern **scene** and **session** management.
 
@@ -76,17 +57,40 @@ await ctx.reply(
 )
 ```
 
-// Handle quick reply actions ONLY if from button:
+### Handle quick reply actions ONLY if from button:
+```js
 bot.hears(/yes/i, async (ctx) => {
-if (ctx.event.message?.quick_reply) {
-await ctx.reply('You clicked Button Yes')
-}
+    if (ctx.event.message?.quick_reply) {
+        await ctx.reply('You clicked Button Yes')
+    }
 })
 bot.hears(/no/i, async (ctx) => {
-if (ctx.event.message?.quick_reply) {
-await ctx.reply('You clicked Button No')
-}
+ if (ctx.event.message?.quick_reply) {
+   await ctx.reply('You clicked Button No')
+ }
 })
+```
+
+#### Multiple Command Patterns
+
+You can match multiple commands with an array or regex:
+
+```js
+bot.command(['/start', '/help', /\/test/i], async (ctx) => {
+  await ctx.reply('You triggered a multi-command handler!')
+})
+```
+
+### Global Error Handler
+
+Add a global error handler for all middleware and handlers:
+
+```js
+bot.catch((err, ctx, next) => {
+  console.error('Global error:', err)
+  // Optionally reply to user or handle error
+})
+```
 
 #### Inline Buttons (Postback & URL)
 

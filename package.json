@@ -1,6 +1,6 @@
 {
   "name": "jsmessengerbot",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A modern telegraf-style framework for Facebook Messenger bots.",
   "main": "index.js",
   "type": "module",
