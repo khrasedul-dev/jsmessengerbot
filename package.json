@@ -1,9 +1,22 @@
 {
   "name": "jsmessengerbot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A modern telegraf-style framework for Facebook Messenger bots.",
   "main": "index.js",
   "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "context.js",
+    "markup.js",
+    "scenes.js",
+    "session.js",
+    "sessionStore.js",
+    "middlewares/",
+    "tests/"
+  ],
   "keywords": [
     "messengerjs",
     "bot",
@@ -16,13 +29,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/khrasedul-dev/messengerjs.git"
+    "url": "git+https://github.com/khrasedul-dev/jsmessengerbot.git"
   },
   "bugs": {
-    "url": "https://github.com/khrasedul-dev/messengerjs/issues"
+    "url": "https://github.com/khrasedul-dev/jsmessengerbot/issues"
   },
-  "homepage": "https://github.com/khrasedul-dev/messengerjs#readme",
+  "homepage": "https://github.com/khrasedul-dev/jsmessengerbot#readme",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"No tests yet\""
   },
   "dependencies": {
@@ -30,6 +45,7 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "dotenv": "^17.2.2"
+    "dotenv": "^17.2.2",
+    "nodemon": "^3.0.2"
   }
 }
