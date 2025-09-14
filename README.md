@@ -16,6 +16,8 @@ npm install jsmessengerbot
 ```
 
 ## API
+### Default webhook listen 
+- `https://<your site>/webhook`
 
 ### MessengerBot
 
