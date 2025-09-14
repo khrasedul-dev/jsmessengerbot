@@ -2,9 +2,9 @@ import axios from 'axios'
 import express from 'express'
 import Context from './context.js'
 import Markup from './markup.js'
-import { sessionStore as defaultSessionStore } from './sessionStore.js'
-import session from './session.js'
 import { Scene, SceneManager } from './scenes.js'
+import session from './session.js'
+import { sessionStore as defaultSessionStore } from './sessionStore.js'
 
 class MessengerBot {
   catch(fn) {
@@ -12,18 +12,19 @@ class MessengerBot {
   }
   hears(patterns, fn) {
     const arr = Array.isArray(patterns) ? patterns : [patterns]
-    this.on('message', (ctx) => {
+    this.on('message', async (ctx) => {
       if (ctx.text) {
         for (const pattern of arr) {
           if (typeof pattern === 'string' && ctx.text.includes(pattern)) {
-            fn(ctx)
-            return
+            await fn(ctx)
+            return true
           } else if (pattern instanceof RegExp && pattern.test(ctx.text)) {
-            fn(ctx)
-            return
+            await fn(ctx)
+            return true
           }
         }
       }
+      return false
     })
   }
 
@@ -102,18 +103,19 @@ class MessengerBot {
 
   command(cmds, fn) {
     const arr = Array.isArray(cmds) ? cmds : [cmds]
-    this.on('message', (ctx) => {
+    this.on('message', async (ctx) => {
       if (ctx.text) {
         for (const cmd of arr) {
           if (typeof cmd === 'string' && ctx.text === cmd) {
-            fn(ctx)
-            return
+            await fn(ctx)
+            return true
           } else if (cmd instanceof RegExp && cmd.test(ctx.text)) {
-            fn(ctx)
-            return
+            await fn(ctx)
+            return true
           }
         }
       }
+      return false
     })
   }
 
@@ -184,15 +186,27 @@ class MessengerBot {
             ctx.session = (await this.sessionStore.get(senderId)) || {}
           }
           await this.runMiddlewares(ctx)
+          let handled = false
           if (event.message && event.message.text) {
-            for (const fn of this.handlers.message) await fn(ctx)
+            for (const fn of this.handlers.message) {
+              if (!handled) {
+                const result = await fn(ctx)
+                if (result === true) handled = true
+              }
+            }
           }
           if (event.postback) {
             const payload = event.postback.payload
             if (this.actions[payload]) {
-              await this.actions[payload](ctx)
+              const result = await this.actions[payload](ctx)
+              if (result === true) handled = true
             }
-            for (const fn of this.handlers.postback) await fn(ctx)
+            for (const fn of this.handlers.postback) {
+              if (!handled) {
+                const result = await fn(ctx)
+                if (result === true) handled = true
+              }
+            }
           }
           // Save session after handling
           if (this.sessionStore) {
@@ -212,4 +226,4 @@ class MessengerBot {
 }
 
 export default MessengerBot
-export { Markup, session, Scene, SceneManager }
+export { Markup, Scene, SceneManager, session }

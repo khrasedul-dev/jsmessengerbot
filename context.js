@@ -17,7 +17,30 @@ class Context {
     )
   }
 
-  async reply(textOrPayload) {
+  async reply(textOrPayload, markup) {
+    if (markup && typeof markup === 'object') {
+      // Messenger quick replies
+      if (markup.quick_replies) {
+        return this.bot.sendMessage(this.chat.id, {
+          text: textOrPayload,
+          quick_replies: markup.quick_replies,
+        })
+      }
+      // Messenger inline keyboard (button template)
+      if (
+        markup.attachment &&
+        markup.attachment.payload?.template_type === 'button'
+      ) {
+        // Ensure text is set in the button template
+        markup.attachment.payload.text = textOrPayload
+        return this.bot.sendMessage(this.chat.id, markup)
+      }
+      // Other Messenger templates
+      if (markup.attachment) {
+        return this.bot.sendMessage(this.chat.id, markup)
+      }
+    }
+    // Fallback: send as before
     return this.bot.sendMessage(this.chat.id, textOrPayload)
   }
 

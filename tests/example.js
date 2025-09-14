@@ -1,6 +1,5 @@
 import 'dotenv/config'
-import MessengerBot, { Markup, session, Scene, SceneManager } from '../index.js'
-
+import MessengerBot, { Markup, Scene, SceneManager, session } from '../index.js'
 
 const bot = new MessengerBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
@@ -97,23 +96,19 @@ bot.command('/video', async (ctx) => {
 
 bot.command('/keyboard', async (ctx) => {
   await ctx.reply(
-    Markup.keyboard(
-      [[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]],
-      'Choose an option:'
-    )
+    'Choose an option:',
+    Markup.keyboard([[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]])
   )
 })
 
 bot.command('/inlineKeyboard', async (ctx) => {
   await ctx.reply(
-    Markup.inlineKeyboard(
-      [
-        Markup.button('Button 1', 'BTN_1'),
-        Markup.button('Button 2', 'BTN_2'),
-        Markup.urlButton('Visit Google', 'https://google.com'),
-      ],
-      'Click a button:'
-    )
+    'Click a button:',
+    Markup.inlineKeyboard([
+      Markup.button('Button 1', 'BTN_1'),
+      Markup.button('Button 2', 'BTN_2'),
+      Markup.urlButton('Visit Google', 'https://google.com'),
+    ])
   )
 })
 
@@ -137,18 +132,14 @@ bot.hears(/no/i, async (ctx) => {
     await ctx.reply('You clicked Button No')
   }
 })
-
-bot.on('message', async (ctx) => {
-  console.log('Received message:', ctx.text)
-})
-
-bot.on('postback', async (ctx) => {
-  console.log('Received postback:', ctx.event.postback?.payload)
-})
-
 // Multiple command example
 bot.command(['/start', '/help', /\/test/i], async (ctx) => {
   await ctx.reply('You triggered a multi-command handler!')
 })
+
+bot.on('message', async (ctx) => {
+    await ctx.reply('Received message:', ctx.text)
+})
+
 
 bot.start(3000)

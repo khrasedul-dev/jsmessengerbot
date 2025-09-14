@@ -1,5 +1,3 @@
-
-
 A **Telegraf-inspired framework** for building **Facebook Messenger bots** with modern **scene** and **session** management.
 
 ## Features
@@ -21,7 +19,7 @@ npm install jsmessengerbot
 
 ### MessengerBot
 
-- `command(cmd, fn)` — Register a command handler
+- `command(cmd, fn)` — Register a command handler. Only the first matching handler will run for each event.
 - `action(payload, fn)` — Register a button/action handler
 - `use(middleware)` — Add middleware
 - `start(port)` — Start the bot server
@@ -50,24 +48,23 @@ import { Markup } from 'jsmessengerbot'
 
 ```js
 await ctx.reply(
-  Markup.keyboard(
-    [[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]],
-    'Choose an option:'
-  )
+  'Choose an option:',
+  Markup.keyboard([[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]])
 )
 ```
 
 ### Handle quick reply actions ONLY if from button:
+
 ```js
 bot.hears(/yes/i, async (ctx) => {
-    if (ctx.event.message?.quick_reply) {
-        await ctx.reply('You clicked Button Yes')
-    }
+  if (ctx.event.message?.quick_reply) {
+    await ctx.reply('You clicked Button Yes')
+  }
 })
 bot.hears(/no/i, async (ctx) => {
- if (ctx.event.message?.quick_reply) {
-   await ctx.reply('You clicked Button No')
- }
+  if (ctx.event.message?.quick_reply) {
+    await ctx.reply('You clicked Button No')
+  }
 })
 ```
 
@@ -96,14 +93,12 @@ bot.catch((err, ctx, next) => {
 
 ```js
 await ctx.reply(
-  Markup.inlineKeyboard(
-    [
-      Markup.button('Button 1', 'BTN_1'),
-      Markup.button('Button 2', 'BTN_2'),
-      Markup.urlButton('Visit Google', 'https://google.com'),
-    ],
-    'Click a button:'
-  )
+  'Click a button:',
+  Markup.inlineKeyboard([
+    Markup.button('Button 1', 'BTN_1'),
+    Markup.button('Button 2', 'BTN_2'),
+    Markup.urlButton('Visit Google', 'https://google.com'),
+  ])
 )
 ```
 
@@ -119,8 +114,16 @@ await ctx.replyWithVideo('https://example.com/video.mp4')
 #### Handling Actions
 
 ```js
-bot.action('BTN_1', (ctx) => ctx.reply('You clicked Button 1!'))
-bot.action('BTN_2', (ctx) => ctx.reply('You clicked Button 2!'))
+bot.action('BTN_1', async (ctx) => {
+  await ctx.reply('You clicked Inline Button 1 ✅')
+  await ctx.replyWithPhoto('https://www.w3schools.com/w3images/lights.jpg')
+})
+bot.action('BTN_2', async (ctx) => {
+  await ctx.reply('You clicked Inline Button 2 ✅')
+  await ctx.replyWithDocument(
+    'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  )
+})
 ```
 
 ## Example: Registration Scene
@@ -194,8 +197,12 @@ bot.on('postback', async (ctx) => {
 
 ```js
 import 'dotenv/config'
-import MessengerBot, { Markup, session,  Scene, SceneManager } from 'jsmessengerbot'
-
+import MessengerBot, {
+  Markup,
+  session,
+  Scene,
+  SceneManager,
+} from 'jsmessengerbot'
 
 const bot = new MessengerBot({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
@@ -286,23 +293,19 @@ bot.command('/video', async (ctx) => {
 
 bot.command('/keyboard', async (ctx) => {
   await ctx.reply(
-    Markup.keyboard(
-      [[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]],
-      'Choose an option:'
-    )
+    'Choose an option:',
+    Markup.keyboard([[Markup.button('Yes', 'YES'), Markup.button('No', 'NO')]])
   )
 })
 
 bot.command('/inlineKeyboard', async (ctx) => {
   await ctx.reply(
-    Markup.inlineKeyboard(
-      [
-        Markup.button('Button 1', 'BTN_1'),
-        Markup.button('Button 2', 'BTN_2'),
-        Markup.urlButton('Visit Google', 'https://google.com'),
-      ],
-      'Click a button:'
-    )
+    'Click a button:',
+    Markup.inlineKeyboard([
+      Markup.button('Button 1', 'BTN_1'),
+      Markup.button('Button 2', 'BTN_2'),
+      Markup.urlButton('Visit Google', 'https://google.com'),
+    ])
   )
 })
 
@@ -318,7 +321,7 @@ bot.action('BTN_2', async (ctx) => {
 // Handle quick reply actions for Messenger keyboard (case-insensitive, only if from button)
 bot.hears(/yes/i, async (ctx) => {
   if (ctx.event.message?.quick_reply) {
-    await ctx.reply('You clicked Button Yes ')
+    await ctx.reply('You clicked Button Yes')
   }
 })
 bot.hears(/no/i, async (ctx) => {
