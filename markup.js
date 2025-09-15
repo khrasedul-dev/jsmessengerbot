@@ -1,10 +1,26 @@
+/**
+ * Markup - Utility class for building Messenger keyboards, buttons, and reply attachments.
+ * Inspired by Telegraf-style Markup but adapted for Messenger Platform.
+ */
 class Markup {
+  /**
+   * Create a web URL button.
+   * @param {string} text - Button title
+   * @param {string} url - Target URL
+   * @returns {object} Messenger web_url button object
+   */
   static urlButton(text, url) {
     return { type: 'web_url', title: text, url }
   }
-  // Telegraf-style keyboard: array of rows, each row is array of button objects
+
+  /**
+   * Create a Messenger quick reply keyboard.
+   * Telegraf-style: array of rows → flattened into quick_replies.
+   * @param {Array<Array<object|string>>} buttonRows - Rows of buttons (text or { text, payload })
+   * @param {string} text - Message text
+   * @returns {object} Messenger quick_replies object
+   */
   static keyboard(buttonRows, text) {
-    // Flatten rows for Messenger quick replies
     const flatButtons = buttonRows.flat().map((btn) => ({
       content_type: 'text',
       title: btn.text || btn,
@@ -16,8 +32,13 @@ class Markup {
     }
   }
 
+  /**
+   * Create an inline keyboard (Messenger button template).
+   * @param {Array<object>} buttons - Array of button objects ({ type, title/text, url, payload })
+   * @param {string} text - Message text
+   * @returns {object} Messenger button template payload
+   */
   static inlineKeyboard(buttons, text) {
-    // Messenger uses button templates for inline keyboards
     return {
       attachment: {
         type: 'template',
@@ -32,7 +53,6 @@ class Markup {
                 url: btn.url,
               }
             }
-            // Default to postback
             return {
               type: 'postback',
               title: btn.text || btn.title,
@@ -44,11 +64,21 @@ class Markup {
     }
   }
 
+  /**
+   * Create a simple postback button.
+   * @param {string} text - Button label
+   * @param {string} payload - Postback payload
+   * @returns {object} Messenger postback button
+   */
   static button(text, payload) {
     return { text, payload }
   }
 
-  // Reply helpers for all types
+  /**
+   * Build a photo reply payload.
+   * @param {string} url - Image URL
+   * @returns {object} Messenger image attachment
+   */
   static replyWithPhoto(url) {
     return {
       attachment: {
@@ -58,6 +88,11 @@ class Markup {
     }
   }
 
+  /**
+   * Build a document reply payload.
+   * @param {string} url - File URL
+   * @returns {object} Messenger file attachment
+   */
   static replyWithDocument(url) {
     return {
       attachment: {
@@ -67,6 +102,11 @@ class Markup {
     }
   }
 
+  /**
+   * Build an audio reply payload.
+   * @param {string} url - Audio file URL
+   * @returns {object} Messenger audio attachment
+   */
   static replyWithAudio(url) {
     return {
       attachment: {
@@ -76,6 +116,11 @@ class Markup {
     }
   }
 
+  /**
+   * Build a video reply payload.
+   * @param {string} url - Video URL
+   * @returns {object} Messenger video attachment
+   */
   static replyWithVideo(url) {
     return {
       attachment: {
@@ -85,6 +130,12 @@ class Markup {
     }
   }
 
+  /**
+   * Create a quick reply menu from simple text options.
+   * @param {string[]} options - Array of quick reply labels
+   * @param {string} text - Message text
+   * @returns {object} Messenger quick_replies object
+   */
   static keyboardReply(options, text) {
     return {
       text,
